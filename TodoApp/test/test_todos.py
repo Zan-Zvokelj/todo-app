@@ -61,7 +61,7 @@ def test_todo():
 
 
 def test_read_all_authenticated(test_todo):
-    response = client.get("/")
+    response = client.get("/todos")
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert len(data) == 1
@@ -70,7 +70,7 @@ def test_read_all_authenticated(test_todo):
 
 
 def test_read_one_authenticated(test_todo):
-    response = client.get("/todo/1")
+    response = client.get("/todos/todo/1")
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["title"] == "Learn to code!"
@@ -85,7 +85,7 @@ def test_create_todo(test_todo):
         "complete": False,
     }
 
-    response = client.post("/todo", json=request_data)
+    response = client.post("/todos/todo", json=request_data)
     assert response.status_code == status.HTTP_201_CREATED
 
     db = TestingSessionLocal()

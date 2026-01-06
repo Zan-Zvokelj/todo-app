@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background:#4f46e5;">
+  <div class="container">
+    <a class="navbar-brand font-weight-bold" href="/todos/todo-page">TodoApp</a>
+
+    <ul class="navbar-nav ml-auto">
+      {% if user %}
+      <li class="nav-item">
+        <a class="btn btn-outline-light text-black btn-sm" onclick="logout()">Logout</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

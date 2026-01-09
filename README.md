@@ -40,6 +40,26 @@ This project was built as a portfolio project to demonstrate real-world backend 
 
 ---
 
+
+## Deployment
+
+This application is deployed using:
+- Docker
+- Render (Web Service)
+- Neon PostgreSQL (cloud database)
+
+Environment variables are used for all sensitive configuration.
+
+### Environment Variables
+
+Required variables:
+- DATABASE_URL
+- SECRET_KEY
+- ALGORITHM
+- ACCESS_TOKEN_EXPIRE_MINUTES
+
+The database uses PostgreSQL with SQLAlchemy and Alembic migrations.
+
 ## Run with Docker (recommended)
 
 ### Requirements

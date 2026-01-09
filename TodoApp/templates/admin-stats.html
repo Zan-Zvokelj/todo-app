@@ -1,0 +1,246 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5 pt-4">
+  <h2 class="fw-bold mb-4 text-center">
+    Admin Stats
+  </h2>
+
+  <!-- FIRST ROW -->
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Total Users</h6>
+          <h2 class="fw-bold">{{ total_users }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Total Todos</h6>
+          <h2 class="fw-bold">{{ total_todos }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Completed</h6>
+          <h2 class="fw-bold text-success">{{ completed_todos }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Open</h6>
+          <h2 class="fw-bold text-warning">{{ open_todos }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEAD ACCOUNTS -->
+  <div class="row mt-4 g-4">
+    <div class="col-md-6 mx-auto">
+      <div class="card shadow-sm text-center border-danger">
+        <div class="card-body">
+          <h6 class="text-muted">Dead Accounts</h6>
+          <h2 class="fw-bold text-danger">
+            {{ dead_accounts_count }}
+          </h2>
+          <p class="text-muted mb-0">
+            Users with 0 todos
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECOND ROW -->
+  <div class="row mt-4 g-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Avg Todos per User</h6>
+          <h2 class="fw-bold">{{ avg_todos_per_user }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Completion Rate</h6>
+          <h2 class="fw-bold text-primary">
+            {{ completion_rate }}%
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLETION CHART -->
+  <div class="row mt-5">
+    <div class="col-md-6 mx-auto">
+      <div id="todo-chart-data"
+           data-completed="{{ completed_todos }}"
+           data-open="{{ open_todos }}"></div>
+
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h6 class="text-muted mb-3">Todo Completion</h6>
+          <canvas id="todoChart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOST PRODUCTIVE USER -->
+  <div class="row mt-4">
+    <div class="col-md-6 mx-auto">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Most Productive User</h6>
+          <h4 class="fw-bold text-primary">
+            {{ most_productive_user.username }}
+          </h4>
+          <p class="text-muted mb-0">
+            {{ most_productive_user.todo_count }} todos
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP USERS CHART -->
+  <div class="row mt-5">
+    <div class="col-md-8 mx-auto">
+      <div id="top-users-data"
+           data-usernames='{{ top_usernames | safe }}'
+           data-counts='{{ top_counts | safe }}'></div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted text-center mb-3">
+            Top 5 Users by Todo Count
+          </h6>
+          <canvas id="topUsersChart" height="220"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TODOS CREATED PER DAY -->
+  <div class="row mt-5">
+    <div class="col-md-10 mx-auto">
+      <div id="daily-data"
+           data-labels='{{ daily_labels | safe }}'
+           data-counts='{{ daily_counts | safe }}'></div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted text-center mb-3">
+            Todos Created per Day (Last 14 Days)
+          </h6>
+          <canvas id="dailyChart" height="220"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <a href="/admin/dashboard" class="btn btn-secondary">
+      Back to Dashboard
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Completion doughnut
+  const completionEl = document.getElementById('todo-chart-data');
+  const completed = Number(completionEl.dataset.completed);
+  const open = Number(completionEl.dataset.open);
+
+  new Chart(document.getElementById('todoChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Completed', 'Open'],
+      datasets: [{
+        data: [completed, open],
+        backgroundColor: ['#22c55e', '#facc15'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  // Top users bar chart
+  const topUsersEl = document.getElementById('top-users-data');
+  const usernames = JSON.parse(topUsersEl.dataset.usernames);
+  const counts = JSON.parse(topUsersEl.dataset.counts);
+
+  new Chart(document.getElementById('topUsersChart'), {
+    type: 'bar',
+    data: {
+      labels: usernames,
+      datasets: [{
+        data: counts,
+        backgroundColor: '#4f46e5',
+        borderRadius: 8
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 1 }
+        }
+      }
+    }
+  });
+
+  // Daily created line chart
+  const dailyEl = document.getElementById('daily-data');
+
+  if (dailyEl) {
+    const dailyLabels = JSON.parse(dailyEl.dataset.labels);
+    const dailyCounts = JSON.parse(dailyEl.dataset.counts);
+
+    new Chart(document.getElementById('dailyChart'), {
+      type: 'line',
+      data: {
+        labels: dailyLabels,
+        datasets: [{
+          data: dailyCounts,
+          tension: 0.35,
+          borderWidth: 2,
+          pointRadius: 4,
+          fill: false
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        }
+      }
+    });
+  }
+</script>
+
+{% endblock %}

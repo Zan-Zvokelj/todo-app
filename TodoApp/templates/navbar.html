@@ -1,13 +1,28 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background:#4f46e5;">
   <div class="container">
-    <a class="navbar-brand font-weight-bold" href="/todos/todo-page">TodoApp</a>
 
-    <ul class="navbar-nav ml-auto">
-      {% if user %}
-      <li class="nav-item">
-        <a class="btn btn-outline-light text-black btn-sm" onclick="logout()">Logout</a>
+    <a class="navbar-brand font-weight-bold" href="/todos/todo-page">
+      TodoApp
+    </a>
+
+    <ul class="navbar-nav ms-auto align-items-center">
+
+      {% if user and user.is_admin %}
+      <li class="nav-item mr-2 me-2">
+        <a class="btn btn-outline-light btn-sm" href="/admin/dashboard">
+          Admin
+        </a>
       </li>
       {% endif %}
+
+      {% if user %}
+      <li class="nav-item">
+        <a class="btn btn-outline-light btn-sm" onclick="logout()">
+          Logout
+        </a>
+      </li>
+      {% endif %}
+
     </ul>
   </div>
 </nav>

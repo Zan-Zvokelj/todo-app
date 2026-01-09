@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<style>
+  .admin-card .card {
+    border-radius: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+
+  .admin-card:hover .card {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+  }
+
+  .admin-gradient {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    border: none;
+  }
+
+  .admin-icon {
+    font-size: 2.8rem;
+  }
+</style>
+
+<div class="container mt-5 pt-4">
+
+  <h2 class="mb-4 fw-bold text-center">
+    Admin Dashboard
+  </h2>
+
+  <div class="row g-4">
+
+    <!-- ALL TODOS -->
+    <div class="col-md-6">
+      <a href="/admin/all-todos" class="admin-card text-decoration-none">
+        <div class="card shadow-sm admin-gradient">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <div>
+              <h4 class="fw-bold text-white mb-1">
+                All Todos
+              </h4>
+              <p class="text-white-50 mb-0">
+                View all todos from all users
+              </p>
+            </div>
+            <div class="admin-icon">
+              📋
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- USERS -->
+    <div class="col-md-6">
+      <a href="/admin/users" class="admin-card text-decoration-none">
+        <div class="card shadow-sm admin-gradient">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <div>
+              <h4 class="fw-bold text-white mb-1">
+                Users
+              </h4>
+              <p class="text-white-50 mb-0">
+                View registered users
+              </p>
+            </div>
+            <div class="admin-icon">
+              👤
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+<!-- STATS -->
+<div class="col-md-6 mt-2">
+  <a href="/admin/stats" class="admin-card text-decoration-none">
+    <div class="card shadow-sm admin-gradient">
+      <div class="card-body d-flex align-items-center justify-content-between">
+        <div>
+          <h4 class="fw-bold text-white mb-1">
+            Stats
+          </h4>
+          <p class="text-white-50 mb-0">
+            View usage statistics
+          </p>
+        </div>
+        <div class="admin-icon">
+          📊
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+
+
+
+
+
+  </div>
+</div>
+
+{% endblock %}

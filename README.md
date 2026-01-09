@@ -1,5 +1,19 @@
 # FastAPI Todo Application
 
+A backend Todo application with user authentication, admin dashboard,
+and analytics endpoints, designed to demonstrate real-world backend architecture,
+database migrations, and containerized deployment.
+
+
+## Project Highlights
+
+- Clean layered FastAPI architecture
+- Database schema versioning with Alembic
+- Optimized PostgreSQL queries with indexes
+- Dockerized local development environment
+- Production-style authentication and authorization flow
+
+
 A production-ready **FastAPI backend application** built with:
 - PostgreSQL
 - SQLAlchemy
@@ -35,3 +49,9 @@ This project was built as a portfolio project to demonstrate real-world backend 
 ### Start the application
 ```bash
 docker compose up --build
+
+
+---
+
+This project was built for learning and portfolio purposes and follows
+best practices commonly used in production backend systems.
